@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	"altafashion_be/config"
 	"errors"
 	"log"
 
@@ -9,6 +10,12 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
+
+var key string
+
+func InitJWT(c *config.AppConfig) {
+	key = c.JWSecret
+}
 
 func GenerateJWTToken(id uint) (string, error) {
 
@@ -23,7 +30,7 @@ func GenerateJWTToken(id uint) (string, error) {
 
 	if err != nil {
 		log.Println("Error generate JWT Token. error ", err)
-		return "", errors.New("Error generate JWT Token.")
+		return "", errors.New("error generate JWT token.")
 	}
 
 	return str, nil
