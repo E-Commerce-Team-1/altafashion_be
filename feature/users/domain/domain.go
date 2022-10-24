@@ -21,7 +21,7 @@ type Repository interface {
 
 type Service interface {
 	Register(newUser Core) (Core, error)
-	Login(existUser Core) (Core, error)
+	Login(existUser Core) (Core, string, error)
 	UpdateProfile(updateData Core, id uint) (Core, error)
 	Deactivate(id uint) (Core, error)
 	ShowByUsername(username string) (Core, error)

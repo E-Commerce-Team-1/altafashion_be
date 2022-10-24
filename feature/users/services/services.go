@@ -3,6 +3,7 @@ package services
 import (
 	"altafashion_be/config"
 	"altafashion_be/feature/users/domain"
+	"altafashion_be/utils/jwt"
 	"errors"
 	"strings"
 
@@ -44,23 +45,28 @@ func (us *userService) Register(newUser domain.Core) (domain.Core, error) {
 }
 
 // Login implements domain.Service
-func (us *userService) Login(existUser domain.Core) (domain.Core, error) {
+func (us *userService) Login(existUser domain.Core) (domain.Core, string, error) {
 	if strings.TrimSpace(existUser.Email) == "" || strings.TrimSpace(existUser.Password) == "" {
-		return domain.Core{}, errors.New("email or password empty")
+		return domain.Core{}, "", errors.New("email or password empty")
 	}
 	res, err := us.qry.GetUser(existUser)
 	if err != nil {
 		if strings.Contains(err.Error(), "table") {
-			return domain.Core{}, errors.New("database error")
+			return domain.Core{}, "", errors.New("database error")
 		} else if strings.Contains(err.Error(), "found") {
-			return domain.Core{}, errors.New("no data")
+			return domain.Core{}, "", errors.New("no data")
 		}
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(res.Password), []byte(existUser.Password))
 	if err != nil {
-		return domain.Core{}, errors.New("password not match")
+		return domain.Core{}, "", errors.New("password not match")
 	}
-	return res, nil
+	token, err := jwt.GenerateJWTToken(res.ID)
+	if err != nil {
+		return domain.Core{}, "", err
+	}
+
+	return res, token, nil
 }
 
 // UpdateProfile implements domain.Service
