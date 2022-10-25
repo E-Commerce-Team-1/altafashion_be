@@ -2,7 +2,6 @@ package jwt
 
 import (
 	"altafashion_be/config"
-	"errors"
 	"log"
 
 	"time"
@@ -30,7 +29,7 @@ func GenerateJWTToken(id uint) (string, error) {
 
 	if err != nil {
 		log.Println("Error generate JWT Token. error ", err)
-		return "", errors.New("error generate JWT token.")
+		return "", err
 	}
 
 	return str, nil
