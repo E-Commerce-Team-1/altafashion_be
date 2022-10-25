@@ -2,7 +2,7 @@ package jwt
 
 import (
 	"altafashion_be/config"
-	"log"
+	"fmt"
 
 	"time"
 
@@ -12,8 +12,29 @@ import (
 
 var key string
 
-func InitJWT(c *config.AppConfig) {
-	key = c.JWSecret
+func GenerateToken(id uint) string {
+	claim := make(jwt.MapClaims)
+	claim["authorized"] = true
+	claim["id"] = id
+	claim["expired"] = time.Now().Add(time.Hour * 24).Unix()
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
+
+	str, err := token.SignedString([]byte(config.SECRET_JWT))
+	if err != nil {
+		return ""
+	}
+	return str
+}
+
+func ExtractTokenProd(c echo.Context) uint {
+	token := c.Get("user").(*jwt.Token)
+	if token.Valid {
+		claim := token.Claims.(jwt.MapClaims)
+		fmt.Print(uint(claim["id"].(float64)))
+		return uint(claim["id"].(float64))
+	}
+	return 0
 }
 
 func GenerateJWTToken(id uint) (string, error) {
@@ -28,21 +49,10 @@ func GenerateJWTToken(id uint) (string, error) {
 	str, err := token.SignedString([]byte(key))
 
 	if err != nil {
-		log.Println("Error generate JWT Token. error ", err)
 		return "", err
 	}
 
 	return str, nil
-}
-
-func ExtractIdToken(c echo.Context) uint {
-	token := c.Get("user").(*jwt.Token)
-	if token.Valid {
-		claims := token.Claims.(jwt.MapClaims)
-		return uint(claims["id"].(float64))
-	}
-
-	return 0
 }
 
 func ExtractToken(c echo.Context) (uint, int64) {
@@ -54,4 +64,14 @@ func ExtractToken(c echo.Context) (uint, int64) {
 	}
 
 	return 0, 0
+}
+
+func ExtractIdToken(c echo.Context) uint {
+	token := c.Get("user").(*jwt.Token)
+	if token.Valid {
+		claims := token.Claims.(jwt.MapClaims)
+		return uint(claims["id"].(float64))
+	}
+
+	return 0
 }
