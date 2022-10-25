@@ -32,16 +32,17 @@ func (us *userService) Register(newUser domain.Core) (domain.Core, error) {
 	generate, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.DefaultCost)
 	if err != nil {
 		log.Error("error on bcrypt", err.Error())
-		return domain.Core{}, errors.New("cannot encrypt password")
+		return domain.Core{}, errors.New(config.ENCRYPT_ERROR)
 	}
 	newUser.Password = string(generate)
 
 	res, err := us.qry.Insert(newUser)
+
 	if err != nil {
 		if strings.Contains(err.Error(), "duplicate") {
-			return domain.Core{}, errors.New("rejected from database")
+			return domain.Core{}, errors.New(config.DUPLICATED_DATA)
 		}
-		return domain.Core{}, errors.New("some problem on database")
+		return domain.Core{}, errors.New(config.DATABASE_ERROR)
 	}
 	return res, nil
 }
