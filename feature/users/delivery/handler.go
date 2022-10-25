@@ -34,7 +34,7 @@ func New(e *echo.Echo, srv domain.Service) {
 	e.POST("/register", handler.Register())
 	e.POST("/login", handler.Login())
 	e.GET("/users", handler.MyProfile(), middleware.JWT([]byte(key)))
-	e.GET("/users/:fullname", handler.ShowByEmail(), middleware.JWT([]byte(key)))
+	e.GET("/users/:email", handler.ShowByEmail(), middleware.JWT([]byte(key)))
 	e.PUT("/users", handler.UpdateProfile(), middleware.JWT([]byte(key)))
 	e.DELETE("/users", handler.Deactivate(), middleware.JWT([]byte(key)))
 }
@@ -91,7 +91,7 @@ func (us *userHandler) UpdateProfile() echo.HandlerFunc {
 		input.Password = c.FormValue("password")
 		input.Location = c.FormValue("location")
 
-		file, err := c.FormFile("user_picture")
+		file, err := c.FormFile("profile")
 		if err == nil {
 			src, err := file.Open()
 			if err != nil {
@@ -119,13 +119,12 @@ func (us *userHandler) UpdateProfile() echo.HandlerFunc {
 		cnv := ToDomain(input)
 
 		//userId := us.srv.ExtractToken(c)
-
 		res, err := us.srv.UpdateProfile(cnv, c)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, err.Error())
 		}
 
-		return c.JSON(http.StatusOK, ToResponse(res, "update", ""))
+		return c.JSON(http.StatusOK, ToResponse(res, "edit", ""))
 
 	}
 }
@@ -182,7 +181,7 @@ func (us *userHandler) MyProfile() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, FailResponses(err.Error()))
 		}
-		return c.JSON(http.StatusOK, SuccessResponses("sucses get userBy fullname", ToResponse(res, "get", "")))
+		return c.JSON(http.StatusOK, SuccessResponses("sucses get My profile", ToResponse(res, "get", "")))
 
 	}
 }

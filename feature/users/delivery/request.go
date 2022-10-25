@@ -38,6 +38,7 @@ func ToDomain(i interface{}) domain.Core {
 			Email:    cnv.Email,
 			Password: cnv.Password,
 			Location: cnv.Location,
+			Profile:  cnv.Profile,
 		}
 	case GetUserRequestFormat:
 		cnv := i.(GetUserRequestFormat)

@@ -34,7 +34,6 @@ type loginResponses struct {
 }
 
 type EditUserResponseFormat struct {
-	ID       uint   `json:"id"`
 	Fullname string `json:"fullname"`
 	Email    string `json:"email"`
 	Location string `json:"location"`
@@ -62,7 +61,6 @@ func ToResponse(core interface{}, code string, token string) interface{} {
 	case "edit":
 		cnv := core.(domain.Core)
 		res = EditUserResponseFormat{
-			ID:       cnv.ID,
 			Fullname: cnv.Fullname,
 			Email:    cnv.Email,
 			Location: cnv.Location,
