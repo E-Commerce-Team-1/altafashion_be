@@ -1,4 +1,4 @@
-name: Build-PushDep
+name: Build-Push
 on:
   push:
     branches:
