@@ -6,7 +6,9 @@ import (
 	"altafashion_be/utils/jwt"
 	"errors"
 	"strings"
+	"time"
 
+	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -70,7 +72,8 @@ func (us *userService) Login(existUser domain.Core) (domain.Core, string, error)
 }
 
 // UpdateProfile implements domain.Service
-func (us *userService) UpdateProfile(updateData domain.Core, id uint) (domain.Core, error) {
+func (us *userService) UpdateProfile(updateData domain.Core, c echo.Context) (domain.Core, error) {
+	id, _ := jwt.ExtractToken(c)
 	if updateData.Password != "" {
 		hashed, _ := bcrypt.GenerateFromPassword([]byte(updateData.Password), bcrypt.DefaultCost)
 
@@ -88,7 +91,8 @@ func (us *userService) UpdateProfile(updateData domain.Core, id uint) (domain.Co
 }
 
 // Deactivate implements domain.Service
-func (us *userService) Deactivate(id uint) (domain.Core, error) {
+func (us *userService) Deactivate(c echo.Context) (domain.Core, error) {
+	id := jwt.ExtractIdToken(c)
 	res, err := us.qry.Delete(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "table") {
@@ -100,9 +104,9 @@ func (us *userService) Deactivate(id uint) (domain.Core, error) {
 	return res, nil
 }
 
-// ShowByUsername implements domain.Service
-func (us *userService) ShowByUsername(username string) (domain.Core, error) {
-	res, err := us.qry.GetByUsername(username)
+// ShowByFullname implements domain.Service
+func (us *userService) ShowByEmail(Email string) (domain.Core, error) {
+	res, err := us.qry.GetByEmail(Email)
 	if err != nil {
 		if strings.Contains(err.Error(), "table") {
 			return domain.Core{}, errors.New("database error")
@@ -114,7 +118,8 @@ func (us *userService) ShowByUsername(username string) (domain.Core, error) {
 }
 
 // MyProfile implements domain.Service
-func (us *userService) MyProfile(id uint) (domain.Core, error) {
+func (us *userService) MyProfile(c echo.Context) (domain.Core, error) {
+	id := jwt.ExtractIdToken(c)
 	res, err := us.qry.GetMyUser(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "table") {
@@ -124,4 +129,17 @@ func (us *userService) MyProfile(id uint) (domain.Core, error) {
 		}
 	}
 	return res, nil
+}
+
+func (rs *userService) IsAuthorized(c echo.Context) error {
+	id, exp := jwt.ExtractToken(c)
+	// loggo.Println("id dr tken = ", id)
+	// loggo.Println("exp dr tken = ", exp)
+	if id == 0 {
+		return errors.New("Request not authorized. Please check token. User not found.")
+	} else if time.Now().Unix() > exp {
+		return errors.New("Request not authorized. Please check token. Expired token.")
+	} else {
+		return nil
+	}
 }

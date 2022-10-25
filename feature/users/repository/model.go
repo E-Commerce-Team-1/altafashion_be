@@ -8,22 +8,20 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string `gorm:"unique"`
+	Fullname string `gorm:"unique"`
 	Email    string `gorm:"unique"`
 	Password string
 	Profile  string
-	Phone    string
 	Location string
 }
 
 func FromDomain(du domain.Core) User {
 	return User{
 		Model:    gorm.Model{ID: du.ID},
-		Username: du.Username,
+		Fullname: du.Fullname,
 		Email:    du.Email,
 		Password: du.Password,
 		Profile:  du.Profile,
-		Phone:    du.Phone,
 		Location: du.Location,
 	}
 }
@@ -31,11 +29,10 @@ func FromDomain(du domain.Core) User {
 func ToDomain(u User) domain.Core {
 	return domain.Core{
 		ID:       u.ID,
-		Username: u.Username,
+		Fullname: u.Fullname,
 		Email:    u.Email,
 		Password: u.Password,
 		Profile:  u.Profile,
-		Phone:    u.Phone,
 		Location: u.Location,
 	}
 }

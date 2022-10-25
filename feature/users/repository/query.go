@@ -62,9 +62,9 @@ func (rq *repoQuery) Delete(id uint) (domain.Core, error) {
 	return res, nil
 }
 
-func (rq *repoQuery) GetByUsername(username string) (domain.Core, error) {
+func (rq *repoQuery) GetByEmail(Email string) (domain.Core, error) {
 	var resQuery User
-	if err := rq.db.First(&resQuery, "username = ?", username).Error; err != nil {
+	if err := rq.db.First(&resQuery, "Fullname = ?", Email).Error; err != nil {
 		log.Error("error on get by email", err.Error())
 		return domain.Core{}, err
 	}

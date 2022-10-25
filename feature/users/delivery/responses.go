@@ -23,29 +23,30 @@ func SuccessDeleteResponses(msg string) map[string]interface{} {
 
 type registerRespons struct {
 	ID       uint   `json:"id"`
-	Username string `json:"username"`
+	Fullname string `json:"fullname"`
 	Email    string `json:"email"`
 }
 
 type loginResponses struct {
-	Username string `json:"username"`
+	Fullname string `json:"fullname"`
 	Email    string `json:"email"`
 	Token    string `json:"token"`
 }
 
 type EditUserResponseFormat struct {
 	ID       uint   `json:"id"`
-	Username string `json:"username"`
+	Fullname string `json:"fullname"`
 	Email    string `json:"email"`
-	Phone    string `json:"phone"`
 	Location string `json:"location"`
+	Profile  string `json:"profile"`
 }
 type GetUserResponseFormat struct {
 	ID       uint   `json:"id"`
-	Username string `json:"username"`
+	Fullname string `json:"Fullname"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
 	Location string `json:"location"`
+	Profile  string `json:"profile"`
 }
 
 func ToResponse(core interface{}, code string, token string) interface{} {
@@ -54,27 +55,27 @@ func ToResponse(core interface{}, code string, token string) interface{} {
 	switch code {
 	case "reg":
 		cnv := core.(domain.Core)
-		res = registerRespons{ID: cnv.ID, Username: cnv.Username, Email: cnv.Email}
+		res = registerRespons{ID: cnv.ID, Fullname: cnv.Fullname, Email: cnv.Email}
 	case "login":
 		cnv := core.(domain.Core)
-		res = loginResponses{Username: cnv.Username, Email: cnv.Email, Token: token}
+		res = loginResponses{Fullname: cnv.Fullname, Email: cnv.Email, Token: token}
 	case "edit":
 		cnv := core.(domain.Core)
 		res = EditUserResponseFormat{
 			ID:       cnv.ID,
-			Username: cnv.Username,
+			Fullname: cnv.Fullname,
 			Email:    cnv.Email,
-			Phone:    cnv.Phone,
 			Location: cnv.Location,
+			Profile:  cnv.Profile,
 		}
 	case "get":
 		cnv := core.(domain.Core)
 		res = GetUserResponseFormat{
 			ID:       cnv.ID,
-			Username: cnv.Username,
+			Fullname: cnv.Fullname,
 			Email:    cnv.Email,
-			Phone:    cnv.Phone,
 			Location: cnv.Location,
+			Profile:  cnv.Profile,
 		}
 	}
 	return res
