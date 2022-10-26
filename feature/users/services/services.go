@@ -137,9 +137,9 @@ func (rs *userService) IsAuthorized(c echo.Context) error {
 	// loggo.Println("id dr tken = ", id)
 	// loggo.Println("exp dr tken = ", exp)
 	if id == 0 {
-		return errors.New("Request not authorized. Please check token. User not found.")
+		return errors.New("request not authorized, please check token, user not found.")
 	} else if time.Now().Unix() > exp {
-		return errors.New("Request not authorized. Please check token. Expired token.")
+		return errors.New("request not authorized, please check token, expired token.")
 	} else {
 		return nil
 	}

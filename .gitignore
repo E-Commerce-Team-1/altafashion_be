@@ -1,3 +1,5 @@
 *.env
 *.out
 *.html
+*_test.go
+altafashion.yml
