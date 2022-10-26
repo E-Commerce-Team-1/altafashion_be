@@ -38,4 +38,4 @@ jobs:
             docker stop project2
             docker rm project2
             docker rmi muhdjau/altafashion
-            docker run --name project2 --link mysqlbe12 -d -p -e DB_PORT=${{secrets.DB_PORT}} -e DB_PWD=${{secrets.DB_PWD}} -e DB_USER=${{secrets.DB_USER}} -e DB_HOST=${{secrets.DB_HOST}} -e DB_NAME=${{secrets.DB_NAME}} -e JW_SECRET=${{secrets.JW_SECRET}} -e AWS_KEY=${{secrets.AWS_KEY}} -e AWS_USER=${{secrets.AWS_USER}} -e AWS_REGION=${{secrets.AWS_REGION}} muhdjau/altafashion
+            docker run --name project2 --link mysqlbe12 -d -e DB_PORT=${{secrets.DB_PORT}} -e DB_PWD=${{secrets.DB_PWD}} -e DB_USER=${{secrets.DB_USER}} -e DB_HOST=${{secrets.DB_HOST}} -e DB_NAME=${{secrets.DB_NAME}} -e JW_SECRET=${{secrets.JW_SECRET}} -e AWS_KEY=${{secrets.AWS_KEY}} -e AWS_USER=${{secrets.AWS_USER}} -e AWS_REGION=${{secrets.AWS_REGION}} muhdjau/altafashion
