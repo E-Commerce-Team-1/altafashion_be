@@ -12,6 +12,10 @@ import (
 
 var key string
 
+func InitJWT(c *config.AppConfig) {
+	key = c.JWSecret
+}
+
 func GenerateToken(id uint) string {
 	claim := make(jwt.MapClaims)
 	claim["authorized"] = true
@@ -20,7 +24,7 @@ func GenerateToken(id uint) string {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 
-	str, err := token.SignedString([]byte(config.SECRET_JWT))
+	str, err := token.SignedString([]byte(key))
 	if err != nil {
 		return ""
 	}

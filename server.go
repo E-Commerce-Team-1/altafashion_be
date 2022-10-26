@@ -21,7 +21,6 @@ func main() {
 
 	pRepo := pRepo.New(db)
 	pServices := pServices.New(pRepo)
-
 	mdlUser := rUser.New(db)
 	serUser := sUser.New(mdlUser)
 

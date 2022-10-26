@@ -3,7 +3,7 @@ package services
 import (
 	"altafashion_be/config"
 	"altafashion_be/feature/users/domain"
-	"altafashion_be/mocks"
+	mocks "altafashion_be/mocks/users"
 	"errors"
 	"testing"
 

@@ -13,6 +13,13 @@ type ProductResponse struct {
 	UserID      uint   `json:"id_user" form:"id_user"`
 }
 
+type GetAllResponse struct {
+	ID    uint   `json:"id" form:"id"`
+	Image string `json:"image" form:"image"`
+	Name  string `json:"name" form:"name"`
+	Price int    `json:"price" form:"price"`
+}
+
 func SuccessResponse(msg string, data interface{}) map[string]interface{} {
 	return map[string]interface{}{
 		"message": msg,
@@ -20,14 +27,14 @@ func SuccessResponse(msg string, data interface{}) map[string]interface{} {
 	}
 }
 
-func SuccessDeleteResponse(msg string) map[string]interface{} {
+func SuccessNoDataResponse(msg string) map[string]interface{} {
 	return map[string]interface{}{
 		"message": msg,
 	}
 }
 
-func FailedResponse(msg string) map[string]string {
-	return map[string]string{
+func FailedResponse(msg interface{}) map[string]interface{} {
+	return map[string]interface{}{
 		"message": msg,
 	}
 }
@@ -48,6 +55,23 @@ func ToResponse(core interface{}, code string) interface{} {
 			Category: cnv.Category, Qty: cnv.Qty, Price: cnv.Price,
 		}
 	}
+
+	return res
+}
+
+func ToResponseList(core interface{}) interface{} {
+	var res interface{}
+	var list []GetAllResponse
+	val := core.([]domain.Core)
+	for _, cnv := range val {
+		list = append(list, GetAllResponse{
+			ID:    cnv.ID,
+			Image: cnv.Image,
+			Name:  cnv.Name,
+			Price: cnv.Price,
+		})
+	}
+	res = list
 
 	return res
 }

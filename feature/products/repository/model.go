@@ -17,6 +17,16 @@ type Product struct {
 	UserID      uint
 }
 
+type User struct {
+	gorm.Model
+	Fullname string `gorm:"unique"`
+	Email    string `gorm:"unique"`
+	Password string
+	Profile  string
+	Location string
+	Products []Product `gorm:"foreignKey:UserID"`
+}
+
 func FromDomain(dc domain.Core) Product {
 	return Product{
 		Model:       gorm.Model{ID: dc.ID},
@@ -59,4 +69,17 @@ func ToDomainArray(listProduct []Product) []domain.Core {
 	}
 
 	return res
+}
+
+func ToDomainDetail(p Product) domain.Core {
+	return domain.Core{
+		ID:          p.ID,
+		Image:       p.Image,
+		Name:        p.Name,
+		Description: p.Description,
+		Category:    p.Category,
+		Qty:         p.Qty,
+		Price:       p.Price,
+		UserID:      p.UserID,
+	}
 }
