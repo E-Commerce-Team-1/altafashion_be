@@ -41,7 +41,7 @@ type EditUserResponseFormat struct {
 }
 type GetUserResponseFormat struct {
 	ID       uint   `json:"id"`
-	Fullname string `json:"Fullname"`
+	Fullname string `json:"fullname"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
 	Location string `json:"location"`
