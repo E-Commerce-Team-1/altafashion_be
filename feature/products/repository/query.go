@@ -23,15 +23,22 @@ func (rq *repoQuery) ShowAll(category, name string, page int) ([]domain.Core, er
 	var resQry []Product
 	if page != 0 {
 		ofst := (page - 1) * 10
-		if err := rq.db.Offset(ofst).Limit(10).Order("created_at desc").Find(&resQry).Error; err != nil {
+		if err := rq.db.Offset(ofst).Limit(10).Order("created_at desc").
+			Find(&resQry).Error; err != nil {
 			return nil, errors.New(config.DATABASE_ERROR)
 		}
 	} else if name != "" {
-		if err := rq.db.Where("name like ?", "%"+name+"%").Find(&resQry).Error; err != nil {
+		ofst := (page - 1) * 10
+		if err := rq.db.Where("name like ?", "%"+name+"%").
+			Offset(ofst).Limit(10).Order("created_at desc").
+			Find(&resQry).Error; err != nil {
 			return nil, errors.New(config.DATABASE_ERROR)
 		}
 	} else if category != "" {
-		if err := rq.db.Where("category = ?", category).Find(&resQry).Error; err != nil {
+		ofst := (page - 1) * 10
+		if err := rq.db.Where("category = ?", category).
+			Offset(ofst).Limit(10).Order("created_at desc").
+			Find(&resQry).Error; err != nil {
 			return nil, errors.New(config.DATABASE_ERROR)
 		}
 	} else {

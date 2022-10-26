@@ -3,11 +3,11 @@ package jwt
 import (
 	"altafashion_be/config"
 	"fmt"
-
 	"time"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
 )
 
 var key string
@@ -26,7 +26,8 @@ func GenerateToken(id uint) string {
 
 	str, err := token.SignedString([]byte(key))
 	if err != nil {
-		return ""
+		log.Error("error on token signed string", err.Error())
+		return "cannot generate token"
 	}
 	return str
 }
@@ -42,7 +43,6 @@ func ExtractTokenProd(c echo.Context) uint {
 }
 
 func GenerateJWTToken(id uint) (string, error) {
-
 	claims := make(jwt.MapClaims)
 	claims["authorized"] = true
 	claims["id"] = id
@@ -51,11 +51,9 @@ func GenerateJWTToken(id uint) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	str, err := token.SignedString([]byte(key))
-
 	if err != nil {
 		return "", err
 	}
-
 	return str, nil
 }
 
