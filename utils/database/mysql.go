@@ -4,6 +4,7 @@ import (
 	"altafashion_be/config"
 	rUser "altafashion_be/feature/users/repository"
 
+	"altafashion_be/feature/products/repository"
 	"fmt"
 
 	"github.com/labstack/gommon/log"
@@ -43,4 +44,5 @@ func InitDB(c *config.AppConfig) *gorm.DB {
 
 func migrateDB(db *gorm.DB) {
 	db.AutoMigrate(&rUser.User{})
+	db.AutoMigrate(&repository.Product{})
 }

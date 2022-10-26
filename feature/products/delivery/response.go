@@ -41,6 +41,12 @@ func ToResponse(core interface{}, code string) interface{} {
 			ID: cnv.ID, Image: cnv.Image, Name: cnv.Name, Description: cnv.Description,
 			Category: cnv.Category, Qty: cnv.Qty, Price: cnv.Price, UserID: cnv.UserID,
 		}
+	case "edit":
+		cnv := core.(domain.Core)
+		res = ProductResponse{
+			ID: cnv.ID, Image: cnv.Image, Name: cnv.Name, Description: cnv.Description,
+			Category: cnv.Category, Qty: cnv.Qty, Price: cnv.Price,
+		}
 	}
 
 	return res

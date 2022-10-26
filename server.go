@@ -2,6 +2,9 @@ package main
 
 import (
 	"altafashion_be/config"
+	pDelivery "altafashion_be/feature/products/delivery"
+	pRepo "altafashion_be/feature/products/repository"
+	pServices "altafashion_be/feature/products/services"
 	dUser "altafashion_be/feature/users/delivery"
 	rUser "altafashion_be/feature/users/repository"
 	sUser "altafashion_be/feature/users/services"
@@ -13,12 +16,13 @@ import (
 
 func main() {
 	e := echo.New()
-
 	cfg := config.NewConfig()
 	db := database.InitDB(cfg)
 
-	mdlUser := rUser.New(db)
+	pRepo := pRepo.New(db)
+	pServices := pServices.New(pRepo)
 
+	mdlUser := rUser.New(db)
 	serUser := sUser.New(mdlUser)
 
 	e.Pre(middleware.RemoveTrailingSlash())
@@ -29,6 +33,7 @@ func main() {
 	// }))
 
 	dUser.New(e, serUser)
+	pDelivery.New(e, pServices)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }
