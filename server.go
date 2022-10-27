@@ -2,6 +2,9 @@ package main
 
 import (
 	"altafashion_be/config"
+	dCart "altafashion_be/feature/carts/delivery"
+	rCart "altafashion_be/feature/carts/repository"
+	sCart "altafashion_be/feature/carts/services"
 	pDelivery "altafashion_be/feature/products/delivery"
 	pRepo "altafashion_be/feature/products/repository"
 	pServices "altafashion_be/feature/products/services"
@@ -22,7 +25,9 @@ func main() {
 	pRepo := pRepo.New(db)
 	pServices := pServices.New(pRepo)
 	mdlUser := rUser.New(db)
+	mdlCart := rCart.New(db)
 	serUser := sUser.New(mdlUser)
+	serCart := sCart.New(mdlCart)
 
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
@@ -33,6 +38,7 @@ func main() {
 
 	dUser.New(e, serUser)
 	pDelivery.New(e, pServices)
+	dCart.New(e, serCart)
 
 	e.Logger.Fatal(e.Start(":8000"))
 }
