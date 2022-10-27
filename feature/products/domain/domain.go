@@ -17,7 +17,7 @@ type Repository interface {
 	ShowDetail(ID uint) (Core, error)
 	Update(updateData Core) (Core, error)
 	Delete(ID uint) error
-	ShowMyProduct() ([]Core, error)
+	ShowMyProduct(ID uint) ([]Core, error)
 }
 
 type Services interface {
@@ -26,5 +26,5 @@ type Services interface {
 	GetDetail(ID uint) (Core, error)
 	EditProduct(updateData Core) (Core, error)
 	Destroy(ID uint) error
-	GetMyProduct() ([]Core, error)
+	GetMyProduct(ID uint) ([]Core, error)
 }

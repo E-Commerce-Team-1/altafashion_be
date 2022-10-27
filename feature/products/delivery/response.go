@@ -75,3 +75,23 @@ func ToResponseList(core interface{}) interface{} {
 
 	return res
 }
+
+func ToResponseMyProduct(core interface{}) interface{} {
+	var res interface{}
+	var list []ProductResponse
+	val := core.([]domain.Core)
+	for _, cnv := range val {
+		list = append(list, ProductResponse{
+			ID:          cnv.ID,
+			Image:       cnv.Image,
+			Description: cnv.Description,
+			Name:        cnv.Name,
+			Category:    cnv.Category,
+			Qty:         cnv.Qty,
+			Price:       cnv.Price,
+		})
+	}
+	res = list
+
+	return res
+}

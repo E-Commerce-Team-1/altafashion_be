@@ -72,6 +72,12 @@ func (ps *productServices) Destroy(ID uint) error {
 	return nil
 }
 
-func (ps *productServices) GetMyProduct() ([]domain.Core, error) {
-	return nil, nil
+func (ps *productServices) GetMyProduct(ID uint) ([]domain.Core, error) {
+	res, err := ps.qry.ShowMyProduct(ID)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, errors.New(config.DATA_NOT_FOUND)
+	}
+
+	return res, nil
 }

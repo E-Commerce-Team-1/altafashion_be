@@ -8,13 +8,13 @@ import (
 
 type Product struct {
 	gorm.Model
-	Image       string
-	Name        string
-	Description string
-	Category    string
-	Qty         int
-	Price       int
-	UserID      uint
+	Image       string `gorm:"-:migration" gorm:"->"`
+	Name        string `gorm:"-:migration" gorm:"->"`
+	Description string `gorm:"-:migration" gorm:"->"`
+	Category    string `gorm:"-:migration" gorm:"->"`
+	Qty         int    `gorm:"-:migration" gorm:"->"`
+	Price       int    `gorm:"-:migration" gorm:"->"`
+	UserID      uint   `gorm:"-:migration" gorm:"->"`
 }
 
 type User struct {

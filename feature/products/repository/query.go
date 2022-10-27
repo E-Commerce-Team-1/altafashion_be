@@ -102,6 +102,14 @@ func (rq *repoQuery) Delete(ID uint) error {
 	return nil
 }
 
-func (rq *repoQuery) ShowMyProduct() ([]domain.Core, error) {
-	return nil, nil
+func (rq *repoQuery) ShowMyProduct(ID uint) ([]domain.Core, error) {
+	var resQry []Product
+	if err := rq.db.Model(&[]Product{}).Where("products.user_id=?", ID).
+		Joins("left join users on users.id = products.user_id").
+		Select("products.image", "products.name", "products.description", "products.category", "products.qty", "products.price").
+		Scan(&resQry).Error; err != nil {
+		return nil, err
+	}
+	res := ToDomainArray(resQry)
+	return res, nil
 }
