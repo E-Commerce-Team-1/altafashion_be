@@ -37,6 +37,7 @@ func New(e *echo.Echo, srv domain.Services) {
 	e.POST("/products", handler.AddProduct(), middleware.JWT([]byte(key)))
 	e.PUT("/products/:id", handler.EditProduct(), middleware.JWT([]byte(key)))
 	e.DELETE("/products/:id", handler.Destroy(), middleware.JWT([]byte(key)))
+	e.GET("/myproducts", handler.GetMyProduct(), middleware.JWT([]byte(key)))
 }
 
 func (ph *productHandler) GetAll() echo.HandlerFunc {
@@ -144,5 +145,18 @@ func (ph *productHandler) Destroy() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusOK, SuccessNoDataResponse("Success delete product."))
+	}
+}
+
+func (ph *productHandler) GetMyProduct() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var resQry AddProductFormat
+		resQry.UserID = jwt.ExtractTokenProd(c)
+		res, err := ph.srv.GetMyProduct(resQry.UserID)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, FailedResponse(config.DATA_NOT_FOUND))
+		}
+
+		return c.JSON(http.StatusOK, SuccessResponse("Success show all data", ToResponseList(res)))
 	}
 }
