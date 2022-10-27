@@ -7,7 +7,7 @@ type AddProductFormat struct {
 	Name        string `json:"name" form:"name"`
 	Description string `json:"description" form:"description"`
 	Category    string `json:"category" form:"category"`
-	Qty         uint   `josn:"qty" form:"qty"`
+	Qty         int    `josn:"qty" form:"qty"`
 	Price       int    `json:"price" form:"price"`
 	UserID      uint   `json:"id_user" form:"id_user"`
 }
@@ -18,7 +18,7 @@ type EditProductFormat struct {
 	Name        string `json:"name" form:"name"`
 	Description string `json:"description" form:"description"`
 	Category    string `json:"category" form:"category"`
-	Qty         uint   `josn:"qty" form:"qty"`
+	Qty         int    `josn:"qty" form:"qty"`
 	Price       int    `json:"price" form:"price"`
 	UserID      uint   `json:"id_user" form:"id_user"`
 }

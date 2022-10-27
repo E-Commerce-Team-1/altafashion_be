@@ -63,7 +63,7 @@ func (ph *productHandler) AddProduct() echo.HandlerFunc {
 		if err := c.Bind(&input); err != nil {
 			return c.JSON(http.StatusBadRequest, FailedResponse(errors.New("an invalid client request")))
 		}
-		input.UserID = uint(jwt.ExtractTokenProd(c))
+		input.UserID = jwt.ExtractTokenProd(c)
 		file, _ := c.FormFile("image")
 		if file != nil {
 			res, err := aws.UploadProfileProduct(c)

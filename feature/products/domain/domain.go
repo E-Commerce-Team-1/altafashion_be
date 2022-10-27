@@ -6,7 +6,7 @@ type Core struct {
 	Name        string
 	Description string
 	Category    string
-	Qty         uint
+	Qty         int
 	Price       int
 	UserID      uint
 }

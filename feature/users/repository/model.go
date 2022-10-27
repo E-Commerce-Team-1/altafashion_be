@@ -8,11 +8,35 @@ import (
 
 type User struct {
 	gorm.Model
-	Fullname string `gorm:"unique"`
+	Fullname string
 	Email    string `gorm:"unique"`
 	Password string
 	Profile  string
 	Location string
+	Products []Product `gorm:"foreignKey:UserID"`
+	Carts    []Cart    `gorm:"foreignKey:UserID"`
+}
+
+type Product struct {
+	gorm.Model
+	Image       string
+	Name        string
+	Description string
+	Category    string
+	Qty         uint
+	Price       int
+	UserID      uint
+	Carts       []Cart `gorm:"foreignKey:IdProduct"`
+}
+
+type Cart struct {
+	gorm.Model
+	IdProduct uint
+	UserID    uint
+	Name      string `gorm:"-:migration" gorm:"->"`
+	Qty       uint
+	Price     int    `gorm:"-:migration" gorm:"->"`
+	Image     string `gorm:"-:migration" gorm:"->"`
 }
 
 func FromDomain(du domain.Core) User {
