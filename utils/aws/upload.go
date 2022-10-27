@@ -37,7 +37,7 @@ func String(length int) string {
 
 func UploadProfileProduct(c echo.Context) (string, error) {
 
-	file, fileheader, err := c.Request().FormFile("product_picture")
+	file, fileheader, err := c.Request().FormFile("image")
 	if err != nil {
 		log.Print(err)
 		return "", err
