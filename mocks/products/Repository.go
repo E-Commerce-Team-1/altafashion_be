@@ -92,13 +92,13 @@ func (_m *Repository) ShowDetail(ID uint) (domain.Core, error) {
 	return r0, r1
 }
 
-// ShowMyProduct provides a mock function with given fields:
-func (_m *Repository) ShowMyProduct() ([]domain.Core, error) {
-	ret := _m.Called()
+// ShowMyProduct provides a mock function with given fields: ID
+func (_m *Repository) ShowMyProduct(ID uint) ([]domain.Core, error) {
+	ret := _m.Called(ID)
 
 	var r0 []domain.Core
-	if rf, ok := ret.Get(0).(func() []domain.Core); ok {
-		r0 = rf()
+	if rf, ok := ret.Get(0).(func(uint) []domain.Core); ok {
+		r0 = rf(ID)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]domain.Core)
@@ -106,8 +106,8 @@ func (_m *Repository) ShowMyProduct() ([]domain.Core, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func() error); ok {
-		r1 = rf()
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(ID)
 	} else {
 		r1 = ret.Error(1)
 	}
