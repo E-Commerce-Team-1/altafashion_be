@@ -8,7 +8,7 @@ type ProductResponse struct {
 	Name        string `json:"name" form:"name"`
 	Description string `json:"description" form:"description"`
 	Category    string `json:"category" form:"category"`
-	Qty         uint   `json:"qty" form:"qty"`
+	Qty         int    `json:"qty" form:"qty"`
 	Price       int    `json:"price" form:"price"`
 	UserID      uint   `json:"id_user" form:"id_user"`
 }
